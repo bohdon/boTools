@@ -6,7 +6,7 @@
     bo@bohdon.com
     
     Description:
-        A tool for advanced rigging in any area.
+        A suite of tools for use in Maya.
     
     Instructions:
         >>> import boTools
