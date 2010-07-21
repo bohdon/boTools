@@ -5,7 +5,7 @@ All view classes that make up the GUI pages/sections.
 __version__ = '0.1.5'
 
 import logging
-from pymel.all import *
+from pymel.core import *
 
 logger = logging.getLogger('Views')
 logger.setLevel(logging.DEBUG)

@@ -5,7 +5,7 @@ __author__ = 'Bohdon Sayre'
 
 import logging, inspect
 import views
-from pymel.all import *
+from pymel.core import *
 
 
 logger = logging.getLogger('GUI')
