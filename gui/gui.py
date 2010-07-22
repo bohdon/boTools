@@ -1,10 +1,11 @@
-
+"""
+The GUI class.
+"""
 
 __version__ = '0.1.2'
-__author__ = 'Bohdon Sayre'
 
-import logging, inspect
-import views
+import logging
+import view, views
 from pymel.core import *
 
 
@@ -16,6 +17,7 @@ classes = inspect.getmembers(views, inspect.isclass)
 #get all view classes except for the template
 VIEWS = dict( [c for c in classes if issubclass(c[1], views.View) and c[0] != 'View'] )
 logger.debug('Views: %s' % (VIEWS.keys()) )
+
 
 class GUI(object):
     """
@@ -71,6 +73,4 @@ class GUI(object):
                     self.views[loopView].show()
                 else:
                     self.views[loopView].hide()
-
-
 
