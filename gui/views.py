@@ -39,6 +39,7 @@ class Main(View):
         import boTools
         reload(boTools)
         reload(boTools.gui)
+        reload(boTools.gui.gui)
         reload(boTools.gui.views)
         boTools.GUI()
 

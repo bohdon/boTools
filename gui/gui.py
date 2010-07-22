@@ -2,9 +2,9 @@
 The GUI class.
 """
 
-__version__ = '0.1.2'
+__version__ = '0.1.8'
 
-import logging
+import logging, inspect
 import view, views
 from pymel.core import *
 
@@ -46,7 +46,9 @@ class GUI(object):
         if window(self.winName, ex=True):
             deleteUI(self.winName)
         
-        with window(self.winName, title=self.title) as self.win:
+        if windowPref(self.winName, ex=True):
+            windowPref(self.winName, e=True, w=240)
+        with window(self.winName, w=240, title=self.title) as self.win:
             with formLayout('mainForm', nd=100) as self.mainForm:
                 #build the current view
                 self.createViews()

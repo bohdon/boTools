@@ -18,7 +18,7 @@
     Feel free to email me with any bugs, comments, or requests!
 """
 
-__version__ = '0.1.1'
+__version__ = '0.1.8'
 __author__ = 'Bohdon Sayre'
 
 
