@@ -1,33 +1,52 @@
 
 
-import logging
+import logging, os
 from pymel.core import *
+import boTools
 
-LOG = logging.getLogger('Nuke Cam Exporter')
-LOG.setLevel(logging.DEBUG)
-
-
-def doIt(filename):
-    dumpSelectedCamToFile(filename)
+LOG = boTools.getLogger('Nuke Cam Exporter')
 
 
-def dumpSelectedCamToFile(filename, st=None, et=None):
-    with open(filename, 'wb') as fp:
-        chanData, fl, hfa, vfa = dumpCameraChan(selected()[0], fp)
-    LOG.debug('Focal Length, HFA, VFA: {0}, {1}, {2}'.format(fl, hfa, vfa))
+INCH_TO_MM = 25.4
 
 
-def dumpCameraChan(cam, fp, st=None, et=None):
+def dumpCameraAuto(camera=None, fileName=None, st=None, et=None):
+    #auto retrieve camera
+    if camera is None:
+        selList = selected()
+        if len(selList) == 0:
+            LOG.error('No camera was provided, and no camera was selected.')
+            return
+        camera = selList[0]
+    
+    #auto retrieve fileName
+    if fileName is None:
+        fileName = fileDialog2(fm=0, ff='*.chan')
+        if fileName is None:
+            LOG.warning('Operation cancelled by user.')
+            return
+        fileName = fileName[0]
+    base, ext = os.path.splitext(fileName)
+    fileName = '{0}.chan'.format(base)
+    
+    #auto retrieve animation range
     if st is None:
         st = playbackOptions(q=True, ast=True)
     if et is None:
         et = playbackOptions(q=True, aet=True)
-    chanData, fl, hfa, vfa = getCameraChanData(cam, st, et)
+    
+    with open(fileName, 'wb') as fp:
+        dumpCamera(camera, fp, st, et)
+
+
+def dumpCamera(cam, fp, st=None, et=None):
+    chanData, fl, hfa, vfa = getCameraData(cam, st, et)
     writeChanFile(chanData, fp)
+    LOG.info('Apply these settings to the Nuke camera: Focal Length:{0}, HFA:{1}, VFA:{2}'.format(fl, hfa, vfa))
     return chanData, fl, hfa, vfa
 
 
-def getCameraChanData(cam, st, et):
+def getCameraData(cam, st, et):
     data = []
     
     camShape = None
@@ -58,16 +77,15 @@ def writeChanFile(chanData, fp):
     contents = '\n'.join(['\t'.join([str(subitem) for subitem in item]) for item in chanData])
     LOG.debug(contents)
     fp.write(contents)
-    LOG.debug('Chan Data written to {0}'.format(fp.name))
+    LOG.info('Chan file written to {0}'.format(fp.name))
 
 
 def getLensAttrs(cam):
     hfa = cam.horizontalFilmAperture.get()
     vfa = cam.verticalFilmAperture.get()
     fl = cam.focalLength.get()
-    nhfa = hfa * 25.4
-    nvfa = vfa * 25.4
+    nhfa = hfa * INCH_TO_MM
+    nvfa = vfa * INCH_TO_MM
     return fl, nhfa, nvfa
-
 
 
