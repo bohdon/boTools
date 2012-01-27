@@ -18,7 +18,7 @@
 """
 
 import os, logging
-__version__ = '0.2.12'
+__version__ = '0.2.17'
 __author__ = 'Bohdon Sayre'
 
 __LOG_LEVEL__ = logging.DEBUG
@@ -48,6 +48,8 @@ def devReload():
     reload(boTools.names)
     import boTools.utils
     reload(boTools.utils)
+    import boTools.files
+    reload(boTools.files)
     import boTools.nukeCam
     reload(boTools.nukeCam)
     import boTools.polyUtils
