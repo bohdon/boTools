@@ -61,7 +61,7 @@ def importAllReferences(loadUnloaded=True, force=False, depthLimit=10):
     """Recursively import all references in the scene"""
     if not force:
         if not importAllReferencesConfirm():
-            return None
+            return False
     
     i = 0
     while getFileReferences() != []:
@@ -85,6 +85,8 @@ def importAllReferences(loadUnloaded=True, force=False, depthLimit=10):
         i += 1
         if i > depthLimit:
             break
+    
+    return True
 
 def importAllReferencesConfirm():
     confirmKw = {
