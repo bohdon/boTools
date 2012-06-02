@@ -4,11 +4,15 @@ All view classes that make up the boTools gui.
 
 
 from pymel.core import *
-import boTools
-from boTools import names, nukeCam, polyUtils, utils
 from boViewGui import view
+import logging
+import boTools
+import names
+import nukeCam
+import polyUtils
+import utils
 
-LOG = boTools.getLogger('Views')
+LOG = logging.getLogger(__name__)
 
 DEFAULT_VIEW = 'MainView'
 

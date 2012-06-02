@@ -1,11 +1,11 @@
 
 
-import os, logging
 from pymel.core import *
-import boTools
-from boTools import utils
+import logging
+import os
+import utils
 
-LOG = boTools.getLogger('Names')
+LOG = logging.getLogger(__name__)
 
 
 

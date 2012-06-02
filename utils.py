@@ -1,9 +1,9 @@
 
 
 import pymel.core as pm
-import boTools
+import logging
 
-LOG = boTools.getLogger('Utils')
+LOG = logging.getLogger(__name__)
 
 
 def simpleFilter(objs, filters):

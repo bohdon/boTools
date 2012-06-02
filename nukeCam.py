@@ -1,10 +1,10 @@
 
 
-import logging, os
 from pymel.core import *
-import boTools
+import logging
+import os
 
-LOG = boTools.getLogger('Nuke Cam Exporter')
+LOG = logging.getLogger(__name__)
 
 
 INCH_TO_MM = 25.4

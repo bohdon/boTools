@@ -1,10 +1,11 @@
 
 
-import sys, os, logging
 import pymel.core as pm
-import boTools
+import logging
+import os
+import sys
 
-LOG = boTools.getLogger('Files')
+LOG = logging.getLogger(__name__)
 CLEANLOG = logging.getLogger('Maya')
 
 MAYA_EXTS = ['ma', 'mb']

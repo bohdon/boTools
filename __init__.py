@@ -17,18 +17,21 @@
         >>> boTools.Gui()
 """
 
-import os, logging
+import logging
+import os
+import files
+import gui
+import names
+import nukeCam
+import polyUtils
+import utils
+import views
+
 __version__ = '0.2.17'
-__author__ = 'Bohdon Sayre'
+gui.VERSION = __version__
 
-__LOG_LEVEL__ = logging.DEBUG
-
-def getLogger(name=''):
-    logname = '{0} : {1}'.format('Bo Tools', name)
-    log = logging.getLogger(logname)
-    log.setLevel(__LOG_LEVEL__)
-    return log
-
+LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.DEBUG)
 
 def Gui():
     """Wrap gui.GUI as GUI for convenience"""
@@ -38,19 +41,12 @@ def Gui():
 
 
 def devReload():
+    LOG.info('devReload is deprecated, please use reloadAll')
+    reloadAll()
+
+def reloadAll():
     import boTools
     reload(boTools)
-    import boTools.gui
-    reload(boTools.gui)
-    import boTools.views
-    reload(boTools.views)
-    import boTools.names
-    reload(boTools.names)
-    import boTools.utils
-    reload(boTools.utils)
-    import boTools.files
-    reload(boTools.files)
-    import boTools.nukeCam
-    reload(boTools.nukeCam)
-    import boTools.polyUtils
-    reload(boTools.polyUtils)
+    for mod in (files, gui, names, nukeCam, polyUtils, utils, views):
+        reload(mod)
+    reload(boTools)

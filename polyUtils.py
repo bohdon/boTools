@@ -1,10 +1,11 @@
 
 
-import os, logging, math
 from pymel.core import *
-import boTools
+import logging
+import math
+import os
 
-LOG = boTools.getLogger('Poly Utils')
+LOG = logging.getLogger(__name__)
 
 
 
