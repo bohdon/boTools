@@ -10,7 +10,7 @@
     
     Dependencies:
         pymel
-        boViewGui
+        viewGui
     
     Usage:
         >>> import boTools

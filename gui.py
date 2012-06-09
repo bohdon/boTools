@@ -2,11 +2,11 @@
 Bo Tools - Gui
 
 Dependencies:
-    boViewGui
+    viewGui
 """
 
 from pymel.core import *
-import boViewGui.gui
+import viewGui.gui
 import logging
 import views
 
@@ -18,6 +18,6 @@ WIN_NAME = 'boToolsWin'
 
 def Gui():
     title = 'Bo Tools {0}'.format(VERSION)
-    g = boViewGui.Gui(title, WIN_NAME, VIEWS, views.DEFAULT_VIEW, 290, 500)
+    g = viewGui.Gui(title, WIN_NAME, VIEWS, views.DEFAULT_VIEW, 290, 500)
     g.create()
 

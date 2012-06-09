@@ -4,10 +4,10 @@ All view classes that make up the boTools gui.
 
 
 from pymel.core import *
-from boViewGui import view
+import viewGui
 import logging
 import boTools
-import boViewGui
+import viewGui
 import names
 import nukeCam
 import polyUtils
@@ -17,7 +17,7 @@ LOG = logging.getLogger(__name__)
 
 DEFAULT_VIEW = 'MainView'
 
-class MainView(boViewGui.View):
+class MainView(viewGui.View):
     displayName = 'Main'
     _bodyMargins = (20, 20)
     def links(self):
@@ -32,7 +32,7 @@ class MainView(boViewGui.View):
             self.viewItem(viewName='MiscView', l='Misc')
             self.viewItem(viewName='HotkeyUtils', l='Setup Hotkey Utils', en=False)
 
-class NamingView(boViewGui.View):
+class NamingView(viewGui.View):
     displayName = 'Naming'
     def links(self):
         return ['MainView', self.viewName]
@@ -60,7 +60,7 @@ class NamingView(boViewGui.View):
     def tool_stripFirstNamespace(self):
         names.stripFirstNamespace(selected())
 
-class CleanupView(boViewGui.View):
+class CleanupView(viewGui.View):
     displayName = 'Cleanup'
     def links(self):
         return ['MainView', self.viewName]
@@ -121,7 +121,7 @@ class CleanupView(boViewGui.View):
                     delete(layer)
 
 
-class ModelingView(boViewGui.View):
+class ModelingView(viewGui.View):
     displayName = 'Modeling'
     def links(self):
         return ['MainView', self.viewName]
@@ -185,7 +185,7 @@ class ModelingView(boViewGui.View):
         vp.run(self.progBar)
         
 
-class RenderingView(boViewGui.View):
+class RenderingView(viewGui.View):
     displayName = 'Rendering'
     def links(self):
         return ['MainView', self.viewName]
@@ -218,7 +218,7 @@ class RenderingView(boViewGui.View):
         nukeCam.dumpCameraAuto()
 
 
-class LightingView(boViewGui.View):
+class LightingView(viewGui.View):
     displayName = 'Lighting'
     def links(self):
         return ['MainView', self.viewName]
@@ -226,7 +226,7 @@ class LightingView(boViewGui.View):
     def buildBody(self):
         pass
 
-class MiscView(boViewGui.View):
+class MiscView(viewGui.View):
     displayName = 'Misc'
     def links(self):
         return ['MainView', self.viewName]
