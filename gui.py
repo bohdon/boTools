@@ -17,13 +17,7 @@ VIEWS = views.VIEWS
 WIN_NAME = 'boToolsWin'
 
 def Gui():
-    g = boViewGui.gui.Gui()
-    g.title = 'Bo Tools {0}'.format(VERSION)
-    g.winName = WIN_NAME
-    g.metrics['w'] = 290
-    g.metrics['h'] = 500
-    g.defaultView = views.DEFAULT_VIEW
-    g.views = VIEWS
+    title = 'Bo Tools {0}'.format(VERSION)
+    g = boViewGui.Gui(title, WIN_NAME, VIEWS, views.DEFAULT_VIEW, 290, 500)
     g.create()
-    del g
 

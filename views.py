@@ -7,6 +7,7 @@ from pymel.core import *
 from boViewGui import view
 import logging
 import boTools
+import boViewGui
 import names
 import nukeCam
 import polyUtils
@@ -16,12 +17,12 @@ LOG = logging.getLogger(__name__)
 
 DEFAULT_VIEW = 'MainView'
 
-class MainView(view.View):
-    _displayName = 'Main'
+class MainView(boViewGui.View):
+    displayName = 'Main'
     _bodyMargins = (20, 20)
     def links(self):
         return [self.viewName]
-    def bodyContent(self):        
+    def buildBody(self):        
         with columnLayout(adj=True, rs=10):
             self.viewItem(viewName='NamingView', l='Naming')
             self.viewItem(viewName='CleanupView', l='Cleanup')
@@ -31,12 +32,12 @@ class MainView(view.View):
             self.viewItem(viewName='MiscView', l='Misc')
             self.viewItem(viewName='HotkeyUtils', l='Setup Hotkey Utils', en=False)
 
-class NamingView(view.View):
-    _displayName = 'Naming'
+class NamingView(boViewGui.View):
+    displayName = 'Naming'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         with columnLayout(adj=True, rs=15):
             with frameLayout(l='Batch Renaming', mw=4, mh=4, bs='out'):
                 with columnLayout(adj=True, rs=4):
@@ -59,12 +60,12 @@ class NamingView(view.View):
     def tool_stripFirstNamespace(self):
         names.stripFirstNamespace(selected())
 
-class CleanupView(view.View):
-    _displayName = 'Cleanup'
+class CleanupView(boViewGui.View):
+    displayName = 'Cleanup'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         template = uiTemplate('GeneralViewTemplate', force=True)
         template.define(frameLayout, lv=False, mw=4, mh=4, bs='etchedIn')
         template.define(columnLayout, adj=True, rs=4)
@@ -120,12 +121,12 @@ class CleanupView(view.View):
                     delete(layer)
 
 
-class ModelingView(view.View):
-    _displayName = 'Modeling'
+class ModelingView(boViewGui.View):
+    displayName = 'Modeling'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         with columnLayout(adj=True, rs=15):
             with frameLayout(lv=False, mw=4, mh=4, bs='etchedIn'):
                 button('Batch UV Snapshots', c=Callback(sourceAndRunMel, 'boBatchUVSnapshot'), ann='Tool for taking UV snapshots on\nseveral objects at once.')
@@ -184,12 +185,12 @@ class ModelingView(view.View):
         vp.run(self.progBar)
         
 
-class RenderingView(view.View):
-    _displayName = 'Rendering'
+class RenderingView(boViewGui.View):
+    displayName = 'Rendering'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         with columnLayout(adj=True, rs=15):
             with frameLayout(lv=False, mw=4, mh=4, bs='etchedIn'):
                 button('Render Stats', c=Callback(sourceAndRunMel, 'boRenderStats'), ann='GUI for setting render stats\non multiple objects at once.')                
@@ -217,20 +218,20 @@ class RenderingView(view.View):
         nukeCam.dumpCameraAuto()
 
 
-class LightingView(view.View):
-    _displayName = 'Lighting'
+class LightingView(boViewGui.View):
+    displayName = 'Lighting'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         pass
 
-class MiscView(view.View):
-    _displayName = 'Misc'
+class MiscView(boViewGui.View):
+    displayName = 'Misc'
     def links(self):
         return ['MainView', self.viewName]
     
-    def bodyContent(self):
+    def buildBody(self):
         pass
 
 
