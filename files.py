@@ -65,27 +65,35 @@ def importAllReferences(loadUnloaded=True, force=False, depthLimit=10):
             return False
     
     i = 0
-    while getFileReferences() != []:
-        fileRefs = getFileReferences()
-        for f in fileRefs:
-            fileName = str(f)
-            if isTopLevelReference(fileName): 
-                if not f.isLoaded():
-                    if loadUnloaded:
-                        f.load(loadReferenceDepth='all')
-                    else:
-                        continue
-                try:
-                    f.importContents()
-                    LOG.info('Imported Reference: {0}'.format(fileName))
-                except RuntimeError, e:
-                    LOG.warning('Could not import reference: {0}\n{1}'.format(fileName, e))
-            else:
-                LOG.debug('Skipping non-top level reference: {0} {1}'.format(f.refNode, f))
+    refs = getTopLevelReferences()
+    while len(refs):
+        for f in refs:
+            if not f.isLoaded():
+                if loadUnloaded:
+                    f.load(loadReferenceDepth='all')
+                else:
+                    continue
+            path = f.path
+            try:
+                f.importContents()
+                LOG.info('Imported Reference: {0}'.format(path))
+            except RuntimeError, e:
+                LOG.warning('Could not import reference: {0}\n{1}'.format(path, e))
         
+        refs = getTopLevelReferences()
         i += 1
         if i > depthLimit:
             break
+
+    # cleanup
+    bad = getBadReferences()
+    if len(bad):
+        try:
+            badlist = [str(b) for b in bad]
+            pm.delete(bad)
+            LOG.info('Deleted bad references: {0}'.format(badlist))
+        except Exception as e:
+            LOG.warning('Could not delete bad references: {0}'.format(bad))
     
     return True
 
@@ -103,26 +111,25 @@ def importAllReferencesConfirm():
         return False
     return True
 
+def getBadReferences():
+    refs = pm.ls(rf=True)
+    return [r for r in refs if r.referenceFile() is None]
+
 def getFileReferences():
     """Return a list of the referenced files in the current scene"""
     refNodes = pm.ls(rf=True)
-    if refNodes == []:
-        return []
-    
-    fileRefs = []
-    for ref in refNodes:
-        fileRefs.append(ref.referenceFile())
-    
+    fileRefs = [r.referenceFile() for r in refNodes]
     return fileRefs
 
-def isTopLevelReference(fileName):
-    """Returns True if the given fileName represents a top level reference node"""
-    refNode = pm.referenceQuery(fileName, rfn=True)
-    topRefNode = pm.referenceQuery(fileName, rfn=True, tr=True)
-    if refNode == topRefNode:
-        return True
-    else:
+def getTopLevelReferences():
+    refs = getFileReferences()
+    return [r for r in refs if isTopLevelReference(r)]
+
+def isTopLevelReference(ref):
+    """ Return True if the given file reference's parent is the scene """
+    if ref is None:
         return False
+    return pm.referenceQuery(ref, rfn=True, tr=True) == ref.refNode
 
 
 
